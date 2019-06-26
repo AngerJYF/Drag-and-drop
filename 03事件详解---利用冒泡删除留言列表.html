@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#oUl {
+				width: 300px;
+				height: 200px;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="oUl">
+			<!--<li>你的留言<a href="javascript:;">删除</a></li>-->
+		</ul>
+		<input type="text" />
+		<input type="button" value="发送" />
+	</body>
+	<script src="MyTools.js"></script>
+	<script type="text/javascript">
+		
+		var oUl = $("#oUl");
+		var aInp = $("input");
+		
+		aInp[1].onclick = function() {
+			
+			oUl.innerHTML += '<li>'+ aInp[0].value +'<a href="javascript:;">删除</a></li>';
+			
+		}
+		
+		// 利用事件冒泡机制 将ul里面的li里面a身上的事件 委托给ul代理
+		//  这样一来  ul里面单击任何地方 都会向上传递给ul 再传递到最顶层
+		// 这时 只有去单击里面的a才可以删除  所以一定要找你在ul里面单击了谁  找你单击的触发该事件的源头
+		oUl.onclick = function(ev) {
+			// 做事件对象的兼容处理
+			ev = ev || event;
+			console.log(ev);
+			// 事件的源头
+			/*
+			 * 标准浏览器(包含IE9 10 11) ： ev.target
+			 * IE浏览器: ev.srcElement;  (这个  谷歌也支持)
+			 * 
+			 * 做一个兼容处理
+			 * */
+			
+			var target = ev.target || ev.srcElement;
+			console.log(target);
+			// 判断当前的触发该事件的事件源 是不是a
+			if (target.nodeName == "A") {
+				// 如果是a 那么让ul移除  这个事件源头a的父级
+				this.removeChild(target.parentNode);
+			}
+		}
+		/*
+		 * 事件委托的好处： 对于内部的子元素 如果由多个 并且数量是动态变化，
+		 * 那么这时候 把它们的事件 委托在祖先节点上，可以提高性能，
+		 * 而且不再关心里面内部到底如何变化的
+		 * 
+		 * */
+	</script>
+</html>

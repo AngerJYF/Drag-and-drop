@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body style="height: 2000px;">
+		<img src="img/1.jpg" alt="" />
+		<a href="img/1.jpg"></a>
+	</body>
+	<script type="text/javascript">
+		事件的默认行为: 在浏览器中 当一个事件发生的时候 浏览器默认做的事儿  比如:按下空格 滚动条自动滚动一下
+		比如:图片 一拖拽  禁止拖拽 ,你要拖到url地址 自动回打开图片地址
+		
+		 //  阻止浏览器的默认行为  ：return false;
+		 
+		 普通写法: return false  这种的不足之处 就是在函数中占用return  如果我实际需要从函数中return 数据  这个方法就不适用
+		 
+		 标准浏览器: ev.preventDefault();  // 阻止默认行为
+		 IE浏览器 :  ev.returnValue = false; // 阻止默认行为
+	</script>
+</html>

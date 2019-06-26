@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			
+			#oUl {
+				margin: 0;
+				padding: 5px;
+				width: 80px;
+				border:1px solid black;
+				display: none;
+				position: absolute;
+			}
+			li {
+				list-style: none;
+				width: 80px;
+				height: 30px;
+				font: 14px/30px "微软雅黑";
+				text-align: center;
+				cursor: pointer;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<ul id="oUl">
+			<li>百度</li>
+			<li>复制</li>
+			<li>粘贴</li>
+			<li>属性</li>
+		</ul>
+	</body>
+	<script type="text/javascript">
+		
+		var oUl = document.getElementById("oUl");
+		var aLi = oUl.getElementsByTagName("li");
+		
+		// 用js实现以下隔行变色
+		for(var i = 0; i < aLi.length; i++) {
+			
+			if (i % 2 == 0) {
+				aLi[i].style.background = "#ddd";
+			} else {
+				aLi[i].style.background = "#f1f1f1";
+			}
+			aLi[i].onmouseover = function() {
+				this.style.background = "orange";
+			}
+			aLi[i].index = i;
+			aLi[i].onmouseout = function() {
+				if (this.index % 2 == 0) {
+					this.style.background = "#ddd";
+				} else {
+					this.style.background = "#f1f1f1";
+				}
+			}
+		}
+		
+		
+		
+		// 整个文档下 右键 触发该事件
+		document.oncontextmenu = function(e) {
+			// 事件对象的兼容处理
+			e = e || event;
+			
+			// 右键之后立马 ul显示出来
+			oUl.style.display = "block";
+			oUl.style.left = e.clientX + "px";
+			oUl.style.top = e.clientY +"px";
+			
+			// return false; // 阻止浏览器的右键菜单
+			/*if (e.preventDefault) {
+				e.preventDefault();
+			}*/
+			
+			/*return false;*/
+			e.preventDefault&&e.preventDefault();  // 短路写法
+			e.returnValue = false; // IE的写法
+			
+		}
+		
+		document.onclick = function() {
+			oUl.style.display = "none";
+		}
+		
+		aLi[0].onclick = function() {
+			
+			window.location.href = "http://www.baidu.com";
+			
+		}
+	</script>
+</html>

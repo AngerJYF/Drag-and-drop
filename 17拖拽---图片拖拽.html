@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body {
+				background: black;
+			}
+			img {
+				width: 150px;
+				position: absolute;
+				border: 2px solid white;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="img/cat1.jpg" alt="" />
+		<img src="img/cat2.jpg" alt="" />
+		<img src="img/cat3.jpg" alt="" />
+	</body>
+	<script type="text/javascript">
+		
+		var aImg = document.getElementsByTagName("img");
+		// 循环让它们把位置分开
+		for(var i = 0; i < aImg.length; i++) {
+			// 将每一个的位置 left 分开一下
+			aImg[i].style.left = 250*i+"px";
+			// 通过循环 调用拖拽函数  分别传入 所有的猫
+			drag(aImg[i]);
+		}
+		
+		
+		
+		
+		
+		
+		// 实现了一个拖拽函数
+		function drag(obj) {
+			
+			// 1鼠标在对象上按下（onmousedown） 获取固定距离
+			
+			obj.onmousedown = function(ev) {
+				ev = ev || event;
+				// 获取鼠标坐标距离div  水平固定距离 和垂直固定距离
+				var disX = ev.clientX -obj.offsetLeft;
+				var disY = ev.clientY - obj.offsetTop;
+				
+				// 阻止浏览器中图片的拖拽的默认行为
+				ev.preventDefault&&ev.preventDefault();
+				ev.returnValue = false;
+				
+				// 为了解决IE低版本的无法拖拽的问题
+				//让当前的拖拽对象 设置全局捕获 得到焦点
+				obj.setCapture&&obj.setCapture();
+				
+				
+				// 鼠标移动
+				document.onmousemove = function(ev) {
+					ev = ev || event;
+					// 让oBox位置跟着我变化
+					var l = ev.clientX - disX;
+					var t = ev.clientY - disY;
+					var maxL = document.documentElement.clientWidth - obj.offsetWidth;
+					var maxT = document.documentElement.clientHeight - obj.offsetHeight;
+					// 这里做一下范围限制
+					/*if (l < 0) {
+						l = 0;
+					}
+					if (l > maxL) {
+						l = maxL;
+					}
+					if (t < 0) {
+						t = 0;
+					}
+					if (t >maxT) {
+						t = maxT;
+					}*/
+					// 三目运算符 进行简化
+					l = l<0 ? 0 : l;
+					l = l>maxL ? maxL : l;
+					t = t<0 ? 0 : t;
+					t = t>maxT ? maxT : t;
+					
+					
+					obj.style.left = l + "px";
+					obj.style.top = t +"px";
+					
+					// 检测一下hitTest函数
+					var bool = hitTest(obj,aImg[0]);
+					if (bool) {
+						console.log("碰上了");
+					} else {
+						console.log("没碰上");
+					}
+					
+				}
+				document.onmouseup = function() {
+					/*oBox.o nmousemove = null;
+					oBox.onmouseup = null;*/
+					// 取消事件 
+					document.onmousemove = document.onmouseup = null;
+					
+					// 弹起鼠标 释放全局捕获
+					obj.releaseCapture&&obj.releaseCapture();
+				}
+			}
+			
+			
+		}
+		
+		// 封装一个碰撞检测的函数
+		function hitTest(obj,obj2) {
+			var objW = obj.offsetWidth;
+			var objH = obj.offsetHeight;
+			var objL = obj.offsetLeft;
+			var objT = obj.offsetTop;
+			
+			var obj2W = obj2.offsetWidth;
+			var obj2H = obj2.offsetHeight;
+			var obj2L = obj2.offsetLeft;
+			var obj2T = obj2.offsetTop;
+			// 进行检测  
+			if (objL+objW < obj2L || objT+objH < obj2T || objL > obj2L +obj2W || objT > obj2T +obj2H) {
+				return false; // 没碰上
+			} else {
+				return true; // 碰上了
+			}
+			
+		}
+		
+	</script>
+</html>

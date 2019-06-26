@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				background: black;
+			}
+			#box {
+				width: 100px;
+				height: 100px;
+				border: 1px solid white;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+	</body>
+	<script type="text/javascript">
+		var oBox = document.getElementById("box");
+		
+		/* function fn() {
+		 * 	
+		 * }
+		 *  函数的调用方式：
+		 * 
+		 *   1 fn(); 直接调用 （其实相当于window在调用）  this指向window
+		 *   2 setInterval(fn,1000); 定时器调用 因为定时器是window下面的方法，所以 this指向window
+		 *   3 new fn(); 用new调用函数 ，说明这个函数是构造函数， 构造函数里面的this 
+		 * 		它是一个初始化的模型（一个隐式对象）
+		 *   4 oBtn.onclick = fn; 事件调用  this指向触发该事件的前面的那个元素
+		 *   5  内部this指向更改  call或者apply调用
+		 * 
+		 * 
+		 * 既然this是当前函数被谁调用 就指向谁 那么应该就是 调用的时候是确定才对  我们能不能改呢？
+		 * 
+		 * */
+		
+		// 在函数下面 有两个方法 call()  apply()  可以更改this指向
+		// fn.call()
+		   /*第一个参数: 需要更改的this指向
+		   	从第二个参数开始  后面可以放实参*/
+		//fn.apply(); 
+			/*第一个参数: 需要更改的this指向
+			第二个参数: 是一个数组  里面可以放你需要传入的实参*/
+		
+		
+		function fn(a,b) {
+			alert(this.id);
+			alert(a+b);
+		}
+		
+		//fn(15,14); // window
+		
+		fn.call(oBox,15,14); //
+		fn.apply(oBox,[15,14]);
+	</script>
+</html>

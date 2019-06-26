@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            position: relative;
+        }
+
+        #title {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            cursor: move;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">
+        title
+    </div>
+
+    <script>
+        var title = document.getElementById('title');
+
+        title.addEventListener('mousedown', function (e) {
+
+            var x = e.pageX - title.offsetLeft;
+            var y = e.pageY - title.offsetTop;
+
+            function move(e) {
+                title.style.left = e.pageX - x + 'px';
+                title.style.top = e.pageY - y + 'px';
+            }
+
+            document.addEventListener('mousemove', move)
+            document.addEventListener('mouseup', function () {
+                document.removeEventListener('mousemove', move);
+            })
+        })
+
+    </script>
+</body>
+
+</html>

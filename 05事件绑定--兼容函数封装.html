@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box {
+				width: 100px;
+				height: 100px;
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+	</body>
+	<script type="text/javascript">
+		var oBox = document.getElementById("box");
+		
+		bind(oBox,"click",function(){alert(123)});
+		bind(oBox,"click",function(){alert(456)});
+		bind(oBox,"click",function(){alert(789)});
+		
+		
+	/*	oBox.addEventListener("click",function(){alert(123)},false);
+		oBox.addEventListener("click",function(){alert(456)},false);
+		oBox.addEventListener("click",function(){alert(789)},false);
+		oBox.attachEvent("onclick",function(){alert(123)});
+		oBox.attachEvent("onclick",function(){alert(456)});
+		oBox.attachEvent("onclick",function(){alert(789)});*/
+		
+		// 封装一个函数 实现 各个浏览器都支持 第二种绑定  实现兼容  
+		function bind(obj,evType,evFn) {
+			// 标准浏览器识别这种绑定方式
+			if (obj.addEventListener) {
+				obj.addEventListener(evType,evFn,false);
+			} else if(obj.attachEvent) {
+				// IE浏览器识别 
+				obj.attachEvent("on"+evType,evFn);
+			} else {
+				// 以上绑定方式都不支持 超古老的浏览器
+				obj["on"+evType] = evFn;
+				// oBox["onclick"] = function(){alert(123)}
+			}
+		}
+	</script>
+</html>

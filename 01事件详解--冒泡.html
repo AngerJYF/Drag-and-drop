@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div {
+				padding: 50px;
+			}
+			#box {
+				background: red;
+			}
+			#box2 {
+				background: green;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="box2"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		var oBox = document.getElementById("box");
+		var oBox2 = document.getElementById("box2");
+		
+		function fn() {
+			alert(this);// 函数内的this  不在函数定义的时候确定  调用的时候确定的
+		}
+		
+		oBox.onclick = fn; // 给oBox绑定一个事件  事件名称 click  事件函数 fn
+		oBox2.onclick = fn;
+		document.onclick = fn;
+	</script>
+</html>

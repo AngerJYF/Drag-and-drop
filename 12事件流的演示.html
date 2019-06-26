@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div {
+				padding: 50px;
+				
+			}
+			#box1 {
+				background: red;
+			}
+			#box2 {
+				background: green;
+			}
+			#box3 {
+				 background: yellow;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box1">
+			<div id="box2">
+				<div id="box3"></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		var oBox1 = document.getElementById("box1");
+		var oBox2 = document.getElementById("box2");
+		var oBox3 = document.getElementById("box3");
+		
+		
+		//元素.addEventListener(evType,evFn,false); //布尔值 是否捕获  true   false（不捕获就是冒泡）
+		function fn(ev) {
+			ev = ev || event;
+			console.log(ev.eventPhase);
+			alert(this.id);
+		}
+		
+		oBox1.addEventListener("click",fn,false);
+		oBox2.addEventListener("click",fn,false);
+		oBox3.addEventListener("click",fn,false);
+		
+		oBox1.addEventListener("click",fn,true);
+		oBox2.addEventListener("click",fn,true);
+		oBox3.addEventListener("click",fn,true);
+		
+		// box1==box2==box3===box3===box2===box1  IE不支持捕获
+		// 事件捕获    事件目标   事件冒泡
+		/*事件对象.eventPhase属性可以查看事件触发时所处的阶段
+		  事件捕获 1    事件目标 2    事件冒泡 3*/
+	</script>
+</html>

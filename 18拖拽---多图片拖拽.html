@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body {
+				background: black;
+			}
+			#box {
+				width: 150px;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="img/1.jpg" alt=""  id="box"/>
+	</body>
+	<script type="text/javascript">
+		
+		var oBox = document.getElementById("box");
+		// 1鼠标在对象上按下（onmousedown） 获取固定距离
+		
+		oBox.onmousedown = function(ev) {
+			ev = ev || event;
+			// 获取鼠标坐标距离div  水平固定距离 和垂直固定距离
+			var disX = ev.clientX -oBox.offsetLeft;
+			var disY = ev.clientY - oBox.offsetTop;
+			
+			// 阻止浏览器中图片的拖拽的默认行为
+			ev.preventDefault&&ev.preventDefault();
+			ev.returnValue = false;
+			
+			// 为了解决IE低版本的无法拖拽的问题
+			//让当前的拖拽对象 设置全局捕获 得到焦点
+			oBox.setCapture&&oBox.setCapture();
+			
+			
+			// 鼠标移动
+			document.onmousemove = function(ev) {
+				ev = ev || event;
+				// 让oBox位置跟着我变化
+				oBox.style.left = ev.clientX - disX + "px";
+				oBox.style.top = ev.clientY - disY +"px";
+			}
+			document.onmouseup = function() {
+				/*oBox.o nmousemove = null;
+				oBox.onmouseup = null;*/
+				// 取消事件 
+				document.onmousemove = document.onmouseup = null;
+				
+				// 弹起鼠标 释放全局捕获
+				oBox.releaseCapture&&oBox.releaseCapture();
+			}
+		}
+	</script>
+</html>

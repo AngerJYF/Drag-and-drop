@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				background: black;
+			}
+			#box {
+				width: 100px;
+				height: 100px;
+				border: 1px solid white;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box1">
+			<div id="box2">
+				<div id="box3"></div>
+			</div>
+		</div>
+	</body>
+	
+	
+	
+	<script type="text/javascript">
+		var oBox = document.getElementById("box");
+		function fn() {
+			oBox.style.background ="blue";
+		}
+		function fn2() {
+			this.style.border = "2px dashed yellow";
+		}
+		
+		bind(oBox,"click",fn);
+		bind(oBox,"click",fn2);
+		
+		
+		unbind(oBox,"click",fn2);
+		
+		/*
+		 *  解绑方式 
+		 *    标准浏览器 
+		 *      元素.removeEventListener(evType,evName,false);
+		 *    IE浏览器 
+		 * 		元素.detachEvent("on"+evType,evFn);
+		 * */
+		
+		// 封装了一个兼容的事件解绑函数
+		function unbind(obj,evType,evFn) {
+			// 标准浏览器认识       移动端应用较多
+			if (obj.removeEventListener) {
+				obj.removeEventListener(evType,evFn,false);
+			} else if(obj.detachEvent) {
+				// IE 认识
+				obj.detachEvent("on"+evType,evFn);
+			} else {
+				// 超古老浏览器认识
+				obj["on"+evType] = null;
+			}
+		}
+		
+
+		
+		// 封装一个函数 实现 各个浏览器都支持 第二种绑定  实现兼容  
+		function bind(obj,evType,evFn) {
+			// 标准浏览器识别这种绑定方式
+			if (obj.addEventListener) {
+				obj.addEventListener(evType,evFn,false);
+				// 上面的这种绑定方式 函数里面的this 指向的是触发该事件的元素
+			} else if(obj.attachEvent) {
+				// IE浏览器识别 
+				obj.attachEvent("on"+evType,evFn);
+				// 这种方式 绑定  函数里面的this 而是指向了window
+			} else {
+				// 以上绑定方式都不支持 超古老的浏览器
+				obj["on"+evType] = evFn;
+				// oBox["onclick"] = function(){alert(123)}
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box {
+				width: 100px;
+				height: 100px;
+				background: red;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+	</body>
+	<script type="text/javascript">
+		
+		var oBox = document.getElementById("box");
+		// 1鼠标在对象上按下（onmousedown） 获取固定距离
+		
+		oBox.onmousedown = function(ev) {
+			ev = ev || event;
+			// 获取鼠标坐标距离div  水平固定距离 和垂直固定距离
+			var disX = ev.clientX -oBox.offsetLeft;
+			var disY = ev.clientY - oBox.offsetTop;
+			console.log(disX);
+			
+			// 鼠标移动
+			document.onmousemove = function(ev) {
+				ev = ev || event;
+				// 让oBox位置跟着我变化
+				oBox.style.left = ev.clientX - disX + "px";
+				oBox.style.top = ev.clientY - disY +"px";
+				if(oBox.offsetLeft >= "200"){
+					// oBox.style.display = 'none';
+					oBox.parentNode.removeChild(oBox);
+				}
+			}
+			document.onmouseup = function() {
+				/*oBox.o nmousemove = null;
+				oBox.onmouseup = null;*/
+				// 取消事件 
+				document.onmousemove = document.onmouseup = null;
+			}
+		}
+	</script>
+</html>

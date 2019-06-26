@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box {
+				width: 100px;
+				height: 100px;
+				background:  red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+	</body>
+	<script type="text/javascript">
+		
+		var oBox = document.getElementById("box");
+		
+	/*	oBox.onclick = function() {
+			alert(123);
+		}
+		oBox.onclick = function() {
+			alert(456);
+		}
+		oBox.onclick = function() {
+			alert(789);
+		}
+		//oBox.onclick = null;
+		* */
+		/*
+		 *  这是一种传统的事件绑定方式   (DOM0级事件绑定)
+		 *  元素.on+事件名称 = 事件处理函数;
+		 * 
+		 *  缺点： 同一个元素 同一个事件 绑定多个事件处理函数  那么 后者会覆盖前者
+		 * 
+		 *  问题： 能不能 让它们这些绑定的事件函数 都执行  不覆盖  怎么做？
+		 *  以后实际开发 往往是 多人协作同一项目  这时候  为了避免 冲突 后者覆盖前者的情况   所以我们来学习第二种事件绑定方式
+		 * */
+		
+		// 第二种事件绑定方式   (DOM2)
+		// 给oBox 添加事件侦听器
+		// 元素.addEventListener(事件类型,事件处理函数 ,布尔值（false）);
+		// 标准浏览器 ：支持这种绑定事件的方式
+		/*oBox.addEventListener("click",function(){alert(123)},false);
+		oBox.addEventListener("click",function(){alert(456)},false);
+		oBox.addEventListener("click",function(){alert(789)},false);*/
+		
+		// IE浏览器： 元素.attachEvent("on"+事件类型,事件处理函数)
+		
+		oBox.attachEvent("onclick",function(){alert(123)});
+		oBox.attachEvent("onclick",function(){alert(456)});
+		oBox.attachEvent("onclick",function(){alert(789)});
+		
+		
+		/*
+		 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * */
+	</script>
+</html>

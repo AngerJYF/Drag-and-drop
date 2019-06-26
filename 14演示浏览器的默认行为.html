@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body style="height: 2000px;">
+	</body>
+	<script type="text/javascript">
+		
+		document.onkeydown = function(ev) {
+			ev = ev || event;
+			
+			if (ev.keyCode == 32) {
+				
+				return false; // 阻止按下空格的默认行为
+			}
+			
+			return 25;
+		}
+		
+	</script>
+</html>

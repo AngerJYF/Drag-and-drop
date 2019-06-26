@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box {
+				width: 150px;
+				height: 300px;
+				position: fixed;
+				left: -150px;
+				top: 150px;
+				background: red;
+				cursor: pointer;
+			}
+			#side {
+				width: 30px;
+				height: 75px;
+				background: black;
+				position: absolute;
+				right: -30px;
+				top: 110px;
+				color: white;
+				text-align: center;
+				line-height: 25px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="side">分享到</div>
+		</div>
+	</body>
+	<script src="MyTools.js"></script>
+	<script type="text/javascript">
+		
+		var oBox = document.getElementById("box");
+		
+		oBox.onmouseover = function() {
+			//this.style.left = "0px";
+			Movejs(this,"left",10,0);
+		}
+		
+		oBox.onmouseout = function() {
+			//this.style.left = "-150px";
+			Movejs(this,"left",10,-150);
+		}
+	</script>
+</html>
