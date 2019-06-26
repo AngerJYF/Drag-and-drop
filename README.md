@@ -1,2 +1,200 @@
 # Drag-and-drop
 原生js写的拖拽与碰撞检测
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		div {
+			width: 60px;
+			height: 60px;
+			user-select: none;
+			position: absolute;
+			border: 1px solid#ccc;
+		}
+		#SL_balloon_obj {
+			display: none!important;
+		}
+	</style>
+</head>
+
+<body>
+	<div>1</div>
+	<div>2</div>
+	<div>3</div>
+	<div>4</div>
+	<div>5</div>
+	<div>6</div>
+	<div>7</div>
+	<div>8</div>
+	<div>9</div>
+</body>
+<script type="text/javascript">
+
+	var aDiv = document.getElementsByTagName("div");
+
+	// 循环让它们把位置分开
+	for (var i = 0; i < aDiv.length; i++) {
+		// 将每一个的位置 left 分开一下
+		var aDivWidth = aDiv[i].offsetWidth - 2;
+		var aDivHeight = aDiv[i].offsetHeight - 2;
+
+		var l = i % 3;
+		var t = parseInt(i / 3)
+		aDiv[i].style.left = (aDivWidth + 5) * l + "px";
+		aDiv[i].style.top = (aDivHeight + 5) * t + "px";
+		// 通过循环 调用拖拽函数  分别传入 所有的 div
+		drag(aDiv[i]);
+	}
+
+
+
+
+
+
+	// 实现了一个拖拽函数
+	function drag(obj) {
+
+		// 1鼠标在对象上按下（onmousedown） 获取固定距离
+
+		obj.onmousedown = function (ev) {
+
+			// 暴力清除 将所有的图片的过渡时间去掉
+			for (var i = 0; i < aDiv.length; i++) {
+				aDiv[i].style.transition = "";
+				aDiv[i].style.zIndex = 1;
+			}
+
+			obj.style.zIndex = 999;
+
+			ev = ev || event;
+			// 获取鼠标坐标距离div  水平固定距离 和垂直固定距离
+			var disX = ev.clientX - obj.offsetLeft;
+			var disY = ev.clientY - obj.offsetTop;
+
+			// 阻止浏览器中图片的拖拽的默认行为
+			ev.preventDefault && ev.preventDefault();
+			ev.returnValue = false;
+
+			// 为了解决IE低版本的无法拖拽的问题
+			//让当前的拖拽对象 设置全局捕获 得到焦点
+			obj.setCapture && obj.setCapture();
+
+			// 把这个当初的位置 存一下
+			var firstL = obj.offsetLeft;
+			var firstT = obj.offsetTop;
+
+			var newObj = null;
+
+			// 鼠标移动
+			document.onmousemove = function (ev) {
+				ev = ev || event;
+				// 让oBox位置跟着我变化
+				var l = ev.clientX - disX;
+				var t = ev.clientY - disY;
+				var maxL = document.documentElement.clientWidth - obj.offsetWidth;
+				var maxT = document.documentElement.clientHeight - obj.offsetHeight;
+				// 这里做一下范围限制
+				l = l < 0 ? 0 : l;
+				l = l > maxL ? maxL : l;
+				t = t < 0 ? 0 : t;
+				t = t > maxT ? maxT : t;
+
+
+				obj.style.left = l + "px";
+				obj.style.top = t + "px";
+
+				// 建立一个空数组 用来存储所有被碰撞上的图片
+				var arrDiv = [];
+
+				// 拿当前的拖拽对象和其他图片进行碰撞 检测  看看有没有碰上 如果碰上 
+				for (var i = 0; i < aDiv.length; i++) {
+					// 排除自己
+					if (aDiv[i] != obj) {
+						// 拿当前对象 和其他图片进行碰撞检测
+						if (hitTest(obj, aDiv[i])) {
+							// 如果碰上了则存起来
+							arrDiv.push(aDiv[i]);
+						}
+
+					}
+
+
+				}
+				// 建立一个空对象  最后经过计算 它就是距离最近的碰撞上的物体
+				newObj = null;
+				var minValue = Infinity;// 假设最小值为最大值
+				if (arrDiv.length) {
+					// 开启循环 循环数组 去看看 要去比较 离得谁最近
+					for (var i = 0; i < arrDiv.length; i++) {
+
+						var a = arrDiv[i].offsetLeft - obj.offsetLeft;
+						var b = arrDiv[i].offsetTop - obj.offsetTop;
+
+						var c = a * a + b * b;
+
+						if (minValue > c) {
+							minValue = c;
+							newObj = arrDiv[i];
+						}
+
+					}
+
+				}
+			}
+			document.onmouseup = function () {
+				/*oBox.o nmousemove = null;
+				oBox.onmouseup = null;*/
+				// 取消事件 
+				document.onmousemove = document.onmouseup = null;
+
+				// 弹起鼠标 释放全局捕获
+				obj.releaseCapture && obj.releaseCapture();
+
+				// 弹起 鼠标 判断是否有碰撞上最小距离图片
+				if (newObj) {
+					obj.style.transition = "0.5s";
+					newObj.style.transition = "0.5s";
+					obj.style.left = newObj.offsetLeft + "px";
+					obj.style.top = newObj.offsetTop + "px";
+					newObj.style.left = firstL + "px";
+					newObj.style.top = firstT + "px";
+
+				} else {
+					// 让自己回到自己的当初的位置
+					obj.style.transition = "0.5s";
+					obj.style.left = firstL + "px";
+					obj.style.top = firstT + "px";
+				}
+
+			}
+		}
+
+
+	}
+
+	// 封装一个碰撞检测的函数
+	function hitTest(obj, obj2) {
+		var objW = obj.offsetWidth;
+		var objH = obj.offsetHeight;
+		var objL = obj.offsetLeft;
+		var objT = obj.offsetTop;
+
+		var obj2W = obj2.offsetWidth;
+		var obj2H = obj2.offsetHeight;
+		var obj2L = obj2.offsetLeft;
+		var obj2T = obj2.offsetTop;
+		// 进行检测  
+		if (objL + objW < obj2L || objT + objH < obj2T || objL > obj2L + obj2W || objT > obj2T + obj2H) {
+			return false; // 没碰上
+		} else {
+			return true; // 碰上了
+		}
+
+	}
+
+</script>
+
+</html>
