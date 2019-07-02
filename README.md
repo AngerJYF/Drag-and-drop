@@ -1,6 +1,6 @@
 >>> 图片(功能展示)
 
-!(图片功能展示)[https://github.com/AngerJYF/Drag-and-drop/blob/master/img/girl.gif]
+![图片功能展示](https://github.com/AngerJYF/Drag-and-drop/blob/master/img/girl.gif)
 
 # Drag-and-drop
 原生js写的拖拽与碰撞检测
