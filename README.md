@@ -200,6 +200,24 @@
 		}
 
 	}
+	
+	
+	
+	// 为 window 添加 mousemove，移动时设置变量为true,静止后为false;
+        // 判断鼠标是否静止或者移动
+        // 延伸一下
+	(function(){
+            let isMove = false,
+                timer = null;
+            window.onmousemove = function(){
+                isMove = true;
+                clearTimeout(timer);
+                console.log(isMove); // 移动时
+                timer = setTimeout(function(){
+                    isMove = false;
+                    console.log(isMove); // 静止后
+                },200);
+         }());
 
 </script>
 
