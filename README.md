@@ -36,6 +36,8 @@
 	<div>7</div>
 	<div>8</div>
 	<div>9</div>
+	
+	<div> event.target 和 event.currentTarget 区别是什么</div>
 </body>
 <script type="text/javascript">
 
